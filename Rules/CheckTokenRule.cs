@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace RuleSet.Rules
 {
-    public class CheckTokenRule : Rule, IRule
+    public class CheckTokenRule : RuleBuilder<ChainedRuleChecker>, IRule
     {
         public CheckTokenRule()
         {
-            NextRule = new CheckTokenExpireRule();
         }
 
         public Platform Platform { get; set; }

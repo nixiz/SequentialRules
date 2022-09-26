@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace RuleSet.Rules
 {
-    public class CheckRefreshToken : Rule, IRule
+    public class CheckRefreshToken : RuleBuilder<ChainedRuleChecker>, IRule
     {
         public Platform Platform { get; set; }
         public CheckRefreshToken()
         {
-            NextRule = null;
         }
         public bool Run(RequestModel model)
         {

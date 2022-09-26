@@ -15,30 +15,21 @@ namespace RuleSet
             model.UserID = 1;
             model.TokenExpireDate = DateTime.Now.AddHours(3);
 
-            IRule firstRule = new CheckPlatformRule();
-            while (firstRule.NextRule != null)
+            ChainedRuleChecker checker = new ChainedRuleChecker();
+            checker
+                .Append(new CheckPlatformRule())
+                .Append(new CheckTokenRule())
+                .Append(new CheckTokenExpireRule())
+                .Append(new CheckRefreshToken());
+
+            var result = checker.Run(model);
+            if (result)
             {
-                if (firstRule.Run(model))
-                {
-                    firstRule = firstRule.NextRule;
-                }
-                else
-                {
-                    Console.WriteLine("Unauthorized 401!");
-                    break;
-                }
+                Console.WriteLine("Authorized 200 OK!");
             }
-            //Working Tail Rule Process
-            if (firstRule.NextRule == null)
+            else
             {
-                if (firstRule.Run(model))
-                {
-                    Console.WriteLine("Authorized 200 OK!");
-                }
-                else
-                {
-                    Console.WriteLine("Unauthorized 401!");
-                }
+                Console.WriteLine("Unauthorized 401!");
             }
 
             Console.WriteLine($"Token: {FakeData.Token}");

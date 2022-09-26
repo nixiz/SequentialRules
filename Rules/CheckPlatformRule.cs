@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace RuleSet.Rules
 {
-    public class CheckPlatformRule : Rule, IRule
+    public class CheckPlatformRule : RuleBuilder<ChainedRuleChecker>, IRule
     {
         public CheckPlatformRule()
         {
-            NextRule = new CheckTokenRule();
         }
         public Platform Platform { get; set; }
         public bool Run(RequestModel model)
